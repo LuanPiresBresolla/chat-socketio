@@ -9,10 +9,14 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "ioredis": "^4.17.3",
+    "mongoose": "^5.9.19",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
+    "@types/ioredis": "^4.16.6",
+    "@types/mongoose": "^5.7.27",
     "@types/socket.io": "^2.1.8",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.9.5"

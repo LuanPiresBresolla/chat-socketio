@@ -15,10 +15,9 @@ const Messages: React.FC<Props> = ({ messages }) => {
   return (
     <Container>
       {messages.map((message) => (
-        <div key={message.message}>
+        <div key={message.username}>
           <strong>{message.username}</strong>
-          <span>{`: ${message.message}`}</span>
-          <br />
+          <span>{message.message}</span>
         </div>
       ))}
     </Container>

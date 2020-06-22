@@ -8,13 +8,12 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-  #root {
-    height: 100vh;
+  html, body, #root {
+    height: 100%;
   }
 
   body {
-    background: rgb(104,0,191);
-    background: linear-gradient(0deg, rgba(104,0,191,1) 26%, rgba(69,0,127,1) 66%);
+    background: #444;
     color: #fff;
     -webkit-font-smoothing: antialiased;
   }

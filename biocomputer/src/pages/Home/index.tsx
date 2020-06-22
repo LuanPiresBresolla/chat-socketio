@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useMemo, useEffect } from 'react';
 import socketio from 'socket.io-client';
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
 
 import Messages from '../Messages';
 
@@ -11,20 +11,30 @@ interface Messages {
 }
 
 const Home: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('teste');
   const [message, setMessage] = useState('');
   const [talk, setTalk] = useState<Messages[]>([]);
 
   const socket = useMemo(() => socketio('http://192.168.8.30:3333'), []);
 
   useEffect(() => {
+    const user = localStorage.getItem('user');
+
+    if (user) {
+      setUsername(user);
+    }
+  }, []);
+
+  useEffect(() => {
     socket.on('previousMessage', (messages: Messages[]) => {
+      console.log(messages);
       setTalk(messages);
     });
   }, [socket]);
 
   useEffect(() => {
     socket.on('receivedMessage', (data: Messages) => {
+      console.log(data);
       setTalk([...talk, data]);
     });
   }, [socket, talk]);
@@ -32,7 +42,7 @@ const Home: React.FC = () => {
   function handleSubmit(event: FormEvent): void {
     event.preventDefault();
 
-    if (username === '' || message === '') {
+    if (message === '') {
       alert('Preencha todos os campos');
       return;
     }
@@ -43,39 +53,26 @@ const Home: React.FC = () => {
     };
 
     setTalk([...talk, data]);
-
+    setMessage('');
     socket.emit('sendMessage', data);
   }
 
   return (
-    <>
-      <Container onSubmit={handleSubmit}>
+    <Container>
+      <Content onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Nome</label>
-          <input
-            type="text"
-            id="name"
-            maxLength={30}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-
-        {!!talk.length && <Messages messages={talk} />}
-
-        <div>
-          <label htmlFor="Message">Mensagem</label>
-          <input
-            type="text"
-            id="Message"
-            maxLength={30}
+          <textarea
+            placeholder="Escreva aqui sua mensagem..."
+            maxLength={200}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
           <button type="submit">Enviar</button>
         </div>
-      </Container>
-    </>
+
+        {!!talk.length && <Messages messages={talk} />}
+      </Content>
+    </Container>
   );
 };
 
