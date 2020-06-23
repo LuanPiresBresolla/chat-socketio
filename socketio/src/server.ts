@@ -25,17 +25,16 @@ mongoose.connect('mongodb://localhost:27017/chat', {
 io.on('connection', async socket => {
   console.log(`Socket conectado: ${socket.id}`);
 
-  // const userConnected = await redis.recover(socket.id);
-  // console.log(userConnected);
-  // if(!userConnected) {
-  //   const messages = await Chat.find();
+  const userConnected = await redis.recover<string>(socket.id);
+  if(!userConnected) {
+    const messages = await Chat.find();
 
-  //   if(messages){
-  //     socket.emit('previousMessage', messages);
-  //   }
-  // }
+    if(messages){
+      socket.emit('previousMessage', messages);
+    }
+  }
   
-  // await redis.save(socket.id, 'user');
+  await redis.save(socket.id, 'user');
 
   socket.on('sendMessage', async data => {
     await Chat.create(data);

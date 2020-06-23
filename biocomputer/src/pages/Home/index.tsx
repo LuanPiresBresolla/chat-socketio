@@ -27,14 +27,12 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     socket.on('previousMessage', (messages: Messages[]) => {
-      console.log(messages);
       setTalk(messages);
     });
   }, [socket]);
 
   useEffect(() => {
     socket.on('receivedMessage', (data: Messages) => {
-      console.log(data);
       setTalk([...talk, data]);
     });
   }, [socket, talk]);
@@ -43,6 +41,7 @@ const Home: React.FC = () => {
     event.preventDefault();
 
     if (message === '') {
+      // eslint-disable-next-line
       alert('Preencha todos os campos');
       return;
     }
@@ -52,9 +51,9 @@ const Home: React.FC = () => {
       message,
     };
 
-    setTalk([...talk, data]);
     setMessage('');
     socket.emit('sendMessage', data);
+    setTalk([...talk, data]);
   }
 
   return (
@@ -63,7 +62,7 @@ const Home: React.FC = () => {
         <div>
           <textarea
             placeholder="Escreva aqui sua mensagem..."
-            maxLength={200}
+            maxLength={50}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
