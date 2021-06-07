@@ -14,4 +14,6 @@ const UserSchema = new Schema({
   avatar: String,
 });
 
-export const User = mongoose.model<IUser>('Users', UserSchema);
+const User = mongoose.model<IUser>('Users', UserSchema);
+
+export { User };
